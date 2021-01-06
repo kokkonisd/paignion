@@ -1,0 +1,30 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: black;
+}
+
+* {
+    font-family: monospace;
+    font-size: 14pt;
+}
+
+
+.room-description, .action-feedback {
+    color: white;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.action-feedback {
+    color: #b8b8b8;
+    margin-top: 50px;
+}
+
+
+.user-controls {
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
+}

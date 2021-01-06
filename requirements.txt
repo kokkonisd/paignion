@@ -1,0 +1,3 @@
+pyyaml==5.1
+markdown==3.3.3
+pymdown-extensions==8.1

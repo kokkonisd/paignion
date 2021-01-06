@@ -1,0 +1,116 @@
+{
+    "origin": "start_room",
+    "start_room": {
+        "north": null,
+        "east": "kitchen",
+        "south": null,
+        "west": null,
+        "up": null,
+        "down": null,
+        "description": "<p>You find yourself in the living room of a cozy little cabin in the woods. On the wall you can see a painting of the cabin, and on the floor besides the door rests an old, dusty book.</p><p>There is a book case in the middle of the room, probably used to display a very special book back when this place was more... lively.</p>",
+        "items": {
+            "intangible": [
+                {
+                    "name": "painting",
+                    "description": "<p>A beautiful painting of a cabin in the woods.</p>",
+                    "amount": 1,
+                    "visible": true,
+                    "effect": null
+                },
+                {
+                    "name": "ceiling",
+                    "description": "",
+                    "amount": 1,
+                    "visible": false,
+                    "effect": null
+                },
+                {
+                    "name": "book case",
+                    "description": "<p>An old book case. Reads: insert book here.</p>",
+                    "amount": 1,
+                    "visible": true,
+                    "effect": null,
+                    "used_with": [
+                        {
+                            "name": "book",
+                            "consumes_subject": true,
+                            "consumes_object": true,
+                            "actions": "set down to basement for start_room; add <p>There is a stairwell going down to the basement.</p> to description for start_room",
+                            "effect_message": "<p>The book case accepts the book and sinks into the floor, revealing a stairwell which fades into the dark of the basement.</p>"
+                        }
+                    ]
+                }
+            ],
+            "tangible": [
+                {
+                    "name": "book",
+                    "description": "<p>An old, dusty book.</p>",
+                    "amount": 1,
+                    "visible": true,
+                    "effect": null
+                },
+                {
+                    "name": "coin",
+                    "description": "<p>A gold coin.</p>",
+                    "amount": 3,
+                    "visible": true,
+                    "effect": null
+                }
+            ]
+        }
+    },
+    "kitchen": {
+        "north": null,
+        "east": null,
+        "south": null,
+        "west": "start_room",
+        "up": null,
+        "down": null,
+        "description": "<p>This is the kitchen of the cabin. Pretty nice, I guess.</p>",
+        "items": {
+            "intangible": [
+                {
+                    "name": "sink",
+                    "description": "<p>A rusty, leaky sink. Doesn't look safe to drink from.</p>",
+                    "amount": 1,
+                    "visible": true,
+                    "effect": null,
+                    "used_with": [
+                        {
+                            "name": "book",
+                            "consumes_subject": false,
+                            "consumes_object": false,
+                            "subject_action": "set effect to wet for book",
+                            "object_action": null,
+                            "room_action": null,
+                            "effect_message": "<p>The book is now soaking wet. Nice.</p>"
+                        },
+                        {
+                            "name": "coin",
+                            "consumes_subject": false,
+                            "consumes_object": false,
+                            "subject_action": "set effect to wet for coin",
+                            "object_action": null,
+                            "room_action": null,
+                            "effect_message": "<p>Did you really need wet coins?</p>"
+                        },
+                    ]
+                }
+            ],
+            "tangible": []
+        }
+    },
+    "basement": {
+        "north": null,
+        "east": null,
+        "south": null,
+        "west": null,
+        "up": "start_room",
+        "down": null,
+        "description": "<p>This is the hidden basement. Smells kinda <em>gross</em>.</p>",
+        "items": {
+            "intangible": [],
+            "tangible": []
+        }
+    },
+}

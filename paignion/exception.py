@@ -1,0 +1,2 @@
+class PaignionException(Exception):
+    pass
