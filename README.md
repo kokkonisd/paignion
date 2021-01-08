@@ -335,9 +335,6 @@ $ python3 -m paignion init my_new_game # or build ...
 
 TODOs:
 
-- Add Markdown parsing to messages in actions
 - Add unit tests
-- Verify actions code in the Paignion parser before building game
-- Rewrite frontend engine in pure native JS
-- Add conditional actions in frontend engine (`if X is Y for Z then...`)
+- Add conditional commands??? maybe???
 - Add part explaining the frontend engine in README
