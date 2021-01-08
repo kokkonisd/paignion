@@ -289,9 +289,9 @@ Finally, `Y` is a string containing a message or a value for the key `X`. This c
 one of three things:
 
 - a _string_, like `"blablabla"`
-- a _Markdown string_, like `m"The _trenches_ were ~~very~~extremely **deep**."`, which
-  will obviously get rendered on the screen like other strings that support Markdown in
-  the engine
+- a _Markdown string_, like `m"The _trenches_ were ~~very~~ extremely **deep**."`,
+  which will obviously get rendered on the screen like other strings that support
+  Markdown in the engine
 - an _integer_, like `4`
 
 The `set` and `add` commands can be used either to set/append strings, or to set/add
