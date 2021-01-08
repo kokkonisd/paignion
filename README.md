@@ -285,7 +285,14 @@ As for why the engine only looks for intangible items outside the player's inven
 if the action is meant for a tangible item, the user can pick it up and use it. There
 is no need to do this without having the user pick the item up first.
 
-Finally, `Y` is a string containing a message or a value for the key `X`.
+Finally, `Y` is a string containing a message or a value for the key `X`. This can be
+one of three things:
+
+- a _string_, like `"blablabla"`
+- a _Markdown string_, like `m"The _trenches_ were ~~very~~extremely **deep**."`, which
+  will obviously get rendered on the screen like other strings that support Markdown in
+  the engine
+- an _integer_, like `4`
 
 The `set` and `add` commands can be used either to set/append strings, or to set/add
 integers. The `sub`, `mul` and `div` commands only serve to subtract, multiply and
