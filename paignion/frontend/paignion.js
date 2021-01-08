@@ -458,27 +458,6 @@ function getRoomOrItem (element)
 }
 
 
-function applyCommands (sentence)
-{
-    let commands = parser.parseCommands(sentence);
-
-    for (let i = 0; i < commands.length; i++) {
-        switch (commands[i].command) {
-            case "set":
-                commands[i].element[commands[i].key] = commands[i].value;
-                break;
-
-            case "add":
-                commands[i].element[commands[i].key] += commands[i].value;
-                break;
-
-            default:
-                throw Error("[paignion:frontend] Unknown command \"" + commands[i].command + "\"");
-        }
-    }
-}
-
-
 
 class Parser {
     constructor ()
@@ -656,65 +635,6 @@ class Parser {
         if (objectWords.length > 0) tokens.object = objectWords.join(" ");
 
         return tokens;
-    }
-
-
-    parseCommands (sentence)
-    {
-        let commands = sentence.split(";");
-        // Filter out empty commands
-        commands = commands.filter(c => {
-            return c.length > 0;
-        });
-
-        let commandTokens = [];
-
-        for (let i = 0; i < commands.length; i++) {
-            let words = commands[i].split(" ");
-            // Filter out empty words
-            words = words.filter(w => {
-                return w.length > 0;
-            });
-
-            // Possible commands:
-            // set <key> to <value> for <room/item>
-            // add <value> to <key> for <room/item>
-
-            switch (words[0]) {
-                case "set":
-                    if (words.length < 6 || words[2] !== "to" || words[words.length - 2] !== "for") {
-                        throw Error("[paignion:frontend] Syntax error for set command: " + commands[i]);
-                    }
-
-                    commandTokens.push({
-                        "command": "set",
-                        "element": getRoomOrItem(words[words.length - 1]),
-                        "key": words[1],
-                        "value": words.slice(3, words.length - 2).join(" ")
-                    });
-                    break;
-
-
-                case "add":
-                    if (words.length < 6 || words[words.length - 4] !== "to" || words[words.length - 2] !== "for") {
-                        throw Error("[paignion:frontend] Syntax error for add command: " + commands[i]);
-                    }
-
-                    commandTokens.push({
-                        "command": "add",
-                        "element": getRoomOrItem(words[words.length - 1]),
-                        "key": words[words.length - 3],
-                        "value": words.slice(1, words.length - 4).join(" ")
-                    });
-                    break;
-
-
-                default:
-                    throw Error("[paignion:frontend] Unknown command \"" + words[0] + "\"");
-            }
-        }
-
-        return commandTokens;
     }
 
 
