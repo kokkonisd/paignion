@@ -10,20 +10,20 @@ body {
 }
 
 
-.room-description, .action-feedback {
+#room-description, #action-feedback {
     color: white;
     width: 50%;
     margin-left: auto;
     margin-right: auto;
 }
 
-.action-feedback {
+#action-feedback {
     color: #b8b8b8;
     margin-top: 50px;
 }
 
 
-.user-controls {
+#user-controls {
     margin-left: auto;
     margin-right: auto;
     width: fit-content;

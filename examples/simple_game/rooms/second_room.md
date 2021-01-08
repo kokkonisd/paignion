@@ -1,5 +1,5 @@
 ---
-## Paignion v0.0.1
+## Paignion v0.0.5
 ##
 ## This is a template for a basic second room in Paignion.
 west: origin

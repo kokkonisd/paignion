@@ -59,9 +59,15 @@ def paignion_build(namespace):
     )
 
     # Put game data into the generated paignion.js file
-    with open(os.path.join(build_dir, "paignion.js"), "a") as f:
-        f.write("\n\n\n// Automatically generated game data object\n")
+    with open(os.path.join(build_dir, "paignion.js"), "r+") as f:
+        # The game data object needs to be written on the top of the file, because
+        # its declaration must come before any references to it
+        frontend_engine = f.read()
+        f.seek(0)
+        f.write("// Automatically generated game data object\n")
         f.write(f"let GAME_DATA = {json.dumps(GAME_DATA)};")
+        f.write("\n\n\n")
+        f.write(frontend_engine)
 
     print("Done")
 

@@ -2,7 +2,8 @@
 
 ![Screenshot of a game built with Paignion](screenshot.png)
 
-Paignion is a Python-generated, p5js-powered game engine for text adventure games.
+Paignion is a Python-generated, JavaScript-powered game engine for text adventure
+games.
 
 ---
 

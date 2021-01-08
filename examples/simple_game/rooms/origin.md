@@ -1,5 +1,5 @@
 ---
-## Paignion v0.0.1
+## Paignion v0.0.5
 ##
 ## This is a template for a basic origin room in Paignion.
 ## There must always be exactly one origin room in a Paignion game; this is the room
