@@ -1,7 +1,7 @@
 import os
 
 
-__version__ = "0.0.4"
+__version__ = "0.0.5"
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 FRONTEND_DIR = os.path.join(BASE_DIR, "frontend")

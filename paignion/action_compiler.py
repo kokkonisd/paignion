@@ -1,6 +1,7 @@
 import re
 
 from paignion.exception import PaignionException
+from paignion.tools import markdownify
 
 
 class ActionToken(object):
@@ -28,11 +29,6 @@ class ActionSetNode(object):
         return f"{self.action().upper()}_NODE({self.key}, {self.value}, {self.element})"
 
 
-class ActionAppendNode(ActionSetNode):
-    def action(self):
-        return "append"
-
-
 class ActionAddNode(ActionSetNode):
     def action(self):
         return "add"
@@ -56,11 +52,11 @@ class ActionDivNode(ActionSetNode):
 class ActionCompiler(object):
     TOKEN_TYPES = [
         ("set_func", r"set"),
-        ("append_func", r"append"),
         ("add_func", r"add"),
         ("sub_func", r"sub"),
         ("mul_func", r"mul"),
         ("div_func", r"div"),
+        ("md_string", r'm"(([^"\\])|(\\"))*"'),
         ("string", r'"(([^"\\])|(\\"))*"'),
         ("integer", r"[0-9]+"),
         ("identifier", r"[a-zA-Z_][a-zA-Z0-9_]*"),
@@ -106,8 +102,6 @@ class ActionCompiler(object):
         while token_list:
             if self.peek("set_func", token_list):
                 return self.parse_set_func(token_list)
-            elif self.peek("append_func", token_list):
-                return self.parse_append_func(token_list)
             elif self.peek("add_func", token_list):
                 return self.parse_add_func(token_list)
             elif self.peek("sub_func", token_list):
@@ -130,7 +124,7 @@ class ActionCompiler(object):
                 f'getRoomOrItem("{action_node.element}")["{action_node.key}"] = '
                 f"{action_node.value};"
             )
-        elif action_node.action() == "append" or action_node.action() == "add":
+        elif action_node.action() == "add":
             return (
                 f'getRoomOrItem("{action_node.element}")["{action_node.key}"] += '
                 f"{action_node.value};"
@@ -165,9 +159,11 @@ class ActionCompiler(object):
 
         self.consume("comma", token_list)
 
-        # Value, can be integer or string
+        # Value, can be integer, Markdown string or simple string
         if self.peek("integer", token_list):
             value = self.parse_integer(token_list)
+        elif self.peek("md_string", token_list):
+            value = self.parse_md_string(token_list)
         else:
             value = self.parse_string(token_list)
 
@@ -183,39 +179,17 @@ class ActionCompiler(object):
 
         return ActionSetNode(key=key, value=value, element=element)
 
-    def parse_append_func(self, token_list):
-        self.consume("append_func", token_list)
-        self.consume("oparen", token_list)
-
-        # Value, must be string
-        value = self.parse_string(token_list)
-
-        self.consume("comma", token_list)
-
-        # Key, can be string or identifier (based on if it has spaces or not)
-        if self.peek("string", token_list):
-            key = self.parse_string(token_list)
-        else:
-            key = self.parse_identifier(token_list)
-
-        self.consume("comma", token_list)
-
-        # Element, can be string or identifier (based on if it has spaces or not)
-        if self.peek("string", token_list):
-            element = self.parse_string(token_list)
-        else:
-            element = self.parse_identifier(token_list)
-
-        self.consume("cparen", token_list)
-
-        return ActionAppendNode(key=key, value=value, element=element)
-
     def parse_add_func(self, token_list):
         self.consume("add_func", token_list)
         self.consume("oparen", token_list)
 
-        # Value, must be integer
-        value = self.parse_integer(token_list)
+        # Value, must be either integer, Markdown string or string
+        if self.peek("integer", token_list):
+            value = self.parse_integer(token_list)
+        elif self.peek("md_string", token_list):
+            value = self.parse_md_string(token_list)
+        else:
+            value = self.parse_string(token_list)
 
         self.consume("comma", token_list)
 
@@ -321,9 +295,13 @@ class ActionCompiler(object):
 
         return ActionDivNode(key=key, value=value, element=element)
 
+    def parse_md_string(self, token_list):
+        # Keep the quotes!
+        return f'"{markdownify(self.consume("md_string", token_list).value[2:-1])}"'
+
     def parse_string(self, token_list):
         # Keep the quotes!
-        return str(self.consume("string", token_list).value)
+        return f'"{self.consume("string", token_list).value[1:-1]}"'
 
     def parse_identifier(self, token_list):
         return str(self.consume("identifier", token_list).value)

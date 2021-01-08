@@ -221,7 +221,7 @@ must at least specify what the name of the item that this item interacts with is
 also an effect message that is shown to the player when the action is carried out. The
 last one is mandatory because not giving your players feedback is _bad_.
 
-The syntax of the commands is very minimal, and there are actually only two commands
+The syntax of the commands is very minimal, and there are actually very few commands
 for now: `set` and `add` which, well, set a certain property to a certain value or
 add (meaning _append_) something to the current value of a specific property. Let me
 explain with an example.
@@ -246,7 +246,9 @@ items:
               - name: key
                 effect_message: "The door is now unlocked."
                 consumes_subject: true
-                actions: "set west to second_room for origin; add <p>The door has been unlocked.</p> to description for origin"
+                actions:
+                  - set(west, "second_room", origin)
+                  - add("The door has been unlocked", description, origin)
 ---
 
 There is a locked door to your west and a key at your feet. You know what to do.
@@ -265,10 +267,13 @@ description will remind them. Of course, in this case I'm using the `add` comman
 show how it's supposed to be used, but in this case it would be better to just change
 the entire description to that paragraph. You decide.
 
-In any case, there are two commands:
+In any case, here are the available commands:
 
-- `set X to Y for Z`
-- `add Y to X for Z`
+- `set(X, Y, Z)`
+- `add(Y, X, Z)`
+- `sub(Y, X, Z)`
+- `mul(Y, X, Z)`
+- `div(Y, X, Z)`
 
 `X` is a property/key: something like `west`, or `effect`, or `visible`, or `amount`...
 
@@ -281,6 +286,10 @@ if the action is meant for a tangible item, the user can pick it up and use it. 
 is no need to do this without having the user pick the item up first.
 
 Finally, `Y` is a string containing a message or a value for the key `X`.
+
+The `set` and `add` commands can be used either to set/append strings, or to set/add
+integers. The `sub`, `mul` and `div` commands only serve to subtract, multiply and
+divide by an integer value respectively.
 
 To conclude, here is the rest of the available properties for the actions:
 

@@ -2,13 +2,13 @@ import re
 import os
 import json
 import yaml
-import markdown
 
-from paignion.definitions import DIRECTIONS, MD_EXTENSIONS
+from paignion.definitions import DIRECTIONS
 from paignion.exception import PaignionException
 from paignion.room import PaignionRoom
 from paignion.item import PaignionItem
 from paignion.used_with_item import PaignionUsedWithItem
+from paignion.tools import markdownify
 
 
 class PaignionParser(object):
@@ -35,12 +35,6 @@ class PaignionParser(object):
 
         return room_data
 
-    def markdownify(self, string):
-        if not string:
-            return string
-
-        return markdown.markdown(string, extensions=MD_EXTENSIONS)
-
     def parse_room_file(self, room_data, room_name):
         # Detect YAML part
         frontmatter_match = re.search("---\n(((?!---)[\\s\\S])*)---", room_data)
@@ -52,7 +46,7 @@ class PaignionParser(object):
             frontmatter = {}
 
         # Parse Markdown part
-        md = self.markdownify(room_data[frontmatter_match.span()[1] :])
+        md = markdownify(room_data[frontmatter_match.span()[1] :])
 
         # Parse items
         if "items" in frontmatter:
@@ -72,7 +66,7 @@ class PaignionParser(object):
                             used_with.append(
                                 PaignionUsedWithItem(
                                     name=uw_item.get("name"),
-                                    effect_message=self.markdownify(
+                                    effect_message=markdownify(
                                         uw_item.get("effect_message")
                                     ),
                                     consumes_subject=uw_item.get("consumes_subject"),
@@ -92,9 +86,7 @@ class PaignionParser(object):
                     tangible_items.append(
                         PaignionItem(
                             name=tangible_item.get("name"),
-                            description=self.markdownify(
-                                tangible_item.get("description")
-                            ),
+                            description=markdownify(tangible_item.get("description")),
                             amount=tangible_item.get("amount"),
                             visible=tangible_item.get("visible"),
                             effect=tangible_item.get("effect"),
@@ -123,7 +115,7 @@ class PaignionParser(object):
                             used_with.append(
                                 PaignionUsedWithItem(
                                     name=uw_item.get("name"),
-                                    effect_message=self.markdownify(
+                                    effect_message=markdownify(
                                         uw_item.get("effect_message")
                                     ),
                                     consumes_subject=uw_item.get("consumes_subject"),
@@ -133,8 +125,8 @@ class PaignionParser(object):
                             )
                         except PaignionException:
                             raise PaignionException(
-                                f"Error parsing used_with item for intangible item"
-                                f"`{intangible_item}` in room `{room_name}`"
+                                f"Error parsing used_with item for intangible item "
+                                f"`{intangible_item['name']}` in room `{room_name}`"
                             )
                 else:
                     used_with = []
@@ -143,9 +135,7 @@ class PaignionParser(object):
                     intangible_items.append(
                         PaignionItem(
                             name=intangible_item.get("name"),
-                            description=self.markdownify(
-                                intangible_item.get("description")
-                            ),
+                            description=markdownify(intangible_item.get("description")),
                             amount=intangible_item.get("amount"),
                             visible=intangible_item.get("visible"),
                             effect=intangible_item.get("effect"),
