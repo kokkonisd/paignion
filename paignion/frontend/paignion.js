@@ -301,7 +301,7 @@ function handleUseAction (parsedSentence)
     // Items can now be used together!
 
     // Apply actions
-    if (useActions.actions) applyCommands(useActions.actions);
+    if (useActions.actions) eval(useActions.actions);
 
     // Update feedback text
     actionFeedbackText = useActions.effect_message;

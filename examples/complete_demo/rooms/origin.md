@@ -12,7 +12,9 @@ items:
             - name: book
               consumes_subject: true
               consumes_object: true
-              actions: "set down to basement for origin; add <p>There is a stairwell going down to the basement.</p> to description for origin"
+              actions:
+                - set(down, "basement", origin)
+                - append("There is a stairwell going down to the basement.", description, origin)
               effect_message: "The book display accepts the book and _sinks into the floor_, revealing a stairwell which fades into the dark of the basement."
     tangible:
         - name: book

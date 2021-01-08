@@ -1,4 +1,5 @@
 from paignion.exception import PaignionException
+from paignion.action_compiler import ActionCompiler
 
 
 class PaignionUsedWithItem(object):
@@ -34,7 +35,10 @@ class PaignionUsedWithItem(object):
                 f"Effect message missing for used_with item `{self.name}`"
             )
 
-        # TODO verify actions
+        action_compiler = ActionCompiler()
+        self.actions = "".join(
+            [action_compiler.compile_action(a) for a in self.actions]
+        )
 
     def dump(self):
         return {
