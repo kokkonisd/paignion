@@ -1,3 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>paignion</title>
+<style type="text/css">
+* {
+    font-family: monospace;
+    font-size: 14pt;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: black;
+}
+
+#room-description, #action-feedback {
+    color: white;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#action-feedback {
+    color: #b8b8b8;
+    margin-top: 50px;
+}
+
+#user-controls {
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
+}
+
+</style>
+</head>
+<body>
+<main></main>
+<script type="text/javascript">
+// Automatically generated game data object
+let GAME_DATA = {"origin": {"north": null, "east": "second_room", "south": null, "west": null, "up": null, "down": null, "description": "<p>This is the start room. There is a painting on the wall and a book on the <em>floor</em>.</p>", "items": {"tangible": [{"name": "book", "description": "<p>An old, dusty book.</p>", "amount": 1, "visible": true, "effect": null, "used_with": []}], "intangible": [{"name": "painting", "description": "<p>A gorgeous painting.</p>", "amount": 1, "visible": true, "effect": null, "used_with": []}]}}, "second_room": {"north": null, "east": null, "south": null, "west": "origin", "up": null, "down": null, "description": "<p>This is the second room. Not much going on here.</p>", "items": {"tangible": [], "intangible": []}}};
+
+
 /** -------------------------------------------------------------------------------------------------------------------
  * Paignion front-end engine.
  * Written by Dimitri Kokkonis (@kokkonisd)
@@ -714,3 +757,7 @@ function help ()
                       p("examine &lt;item&gt;: examine an item from your inventory") +
                       p("help: display this message"));
 }
+
+</script>
+</body>
+</html>

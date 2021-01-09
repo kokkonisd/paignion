@@ -14,11 +14,18 @@ from paignion.tools import markdownify
 class PaignionParser(object):
     def verify_project_dir(self, project_dir):
         rooms_dir = os.path.join(project_dir, "rooms")
+        origin_room = os.path.join(rooms_dir, "origin.md")
 
         # Check that the rooms directory exists
         if not os.path.exists(rooms_dir) or not os.path.isdir(rooms_dir):
             raise PaignionException(
                 "Rooms directory not found. Please create the rooms/ directory."
+            )
+
+        # Check that the origin.md room exists
+        if not os.path.exists(origin_room) or not os.path.isfile(origin_room):
+            raise PaignionException(
+                "Origin room (origin.md) not found. Please create an origin room."
             )
 
     def parse_room_files(self, room_files):

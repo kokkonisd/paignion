@@ -22,6 +22,25 @@ MD_EXTENSIONS = [
 ]
 
 
+INDEX_HTML_TEMPLATE = """\
+<!DOCTYPE html>
+<html>
+<head>
+<title>paignion</title>
+<style type="text/css">
+{}
+</style>
+</head>
+<body>
+<main></main>
+<script type="text/javascript">
+{}
+</script>
+</body>
+</html>
+"""
+
+
 SIMPLE_ORIGIN_ROOM_TEMPLATE = """\
 ---
 ## Paignion v{}
@@ -68,3 +87,9 @@ west: origin
 
 This is the second room. Not much going on here.
 """
+
+TERMINAL_COLORS = {
+    "yellow": "\033[33m{}\033[0m",
+    "orange": "\033[91m{}\033[0m",
+    "red": "\033[31m{}\033[0m",
+}
