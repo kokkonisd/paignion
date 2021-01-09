@@ -64,4 +64,4 @@ class PaignionItem(object):
         }
 
     def __str__(self):
-        return json.dumps(self.dump(), indent=4)
+        return json.dumps(self.dump(), indent=4, sort_keys=True)
