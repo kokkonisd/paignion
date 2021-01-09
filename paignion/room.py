@@ -1,7 +1,7 @@
 import json
 
-
 from paignion.exceptions import PaignionRoomException
+from paignion.item import PaignionItem
 
 
 class PaignionRoom(object):
@@ -66,13 +66,32 @@ class PaignionRoom(object):
             [] if not self.intangible_items else self.intangible_items
         )
 
-        # Item name is mandatory
+        # Room name is mandatory
         if not self.name:
-            raise PaignionRoomException("Name missing for item")
+            raise PaignionRoomException("Name missing for room")
 
-        # Item description is mandatory
+        # Room description is mandatory
         if not self.description:
-            raise PaignionRoomException(f"Description missing for item `{self.name}`")
+            raise PaignionRoomException(f"Description missing for room `{self.name}`")
+
+        # Tangible items should be list
+        if type(self.tangible_items) != list:
+            raise PaignionRoomException(
+                f"Tangible items should be a list for room `{self.name}`"
+            )
+
+        # Intangible items should be list
+        if type(self.intangible_items) != list:
+            raise PaignionRoomException(
+                f"Intangible items should be a list for room `{self.name}`"
+            )
+
+        # Tangible & intangible items should be lists of PaignionItems
+        for i in self.tangible_items + self.tangible_items:
+            if type(i) != PaignionItem:
+                raise PaignionRoomException(
+                    f"Item `{i}` has incorrect type for room `{self.name}`"
+                )
 
     def dump(self):
         """Dump a dictionary containing all of the data of the room.

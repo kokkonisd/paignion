@@ -1,4 +1,7 @@
+import json
+
 from paignion.exceptions import PaignionItemException
+from paignion.used_with_item import PaignionUsedWithItem
 
 
 class PaignionItem(object):
@@ -35,11 +38,22 @@ class PaignionItem(object):
     def verify_attributes(self):
         """Verify the attributes of the PaignionItem object."""
         # Amount should be 1 by default
-        self.amount = 1 if not self.amount else self.amount
+        self.amount = 1 if self.amount == None else self.amount
+        # Amount should be int or "inf"
+        if self.amount != "inf":
+            self.amount = int(self.amount)
+            # Amount should be strictly positive
+            if self.amount <= 0:
+                raise PaignionItemException(
+                    f"Negative or zero amount for item `{self.name}`"
+                )
         # Item should be visible by default
         self.visible = True if self.visible == None else self.visible
         # Used with should be an empty list by default
         self.used_with = [] if not self.used_with else self.used_with
+        # Effect should be a string if not None
+        if self.effect != None:
+            self.effect = str(self.effect)
 
         # Item name is mandatory
         if not self.name:
@@ -48,6 +62,17 @@ class PaignionItem(object):
         # Item description is mandatory
         if self.visible and not self.description:
             raise PaignionItemException(f"Description missing for item `{self.name}`")
+
+        if type(self.used_with) != list:
+            raise PaignionItemException(
+                f"used_with items should be a list for item `{self.name}`"
+            )
+
+        for i in self.used_with:
+            if type(i) != PaignionUsedWithItem:
+                raise PaignionItemException(
+                    f"used_with item `{i}` has incorrect type for item `{self.name}`"
+                )
 
     def dump(self):
         """Dump a dictionary containing all of the data of the item.

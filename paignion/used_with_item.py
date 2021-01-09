@@ -1,3 +1,5 @@
+import json
+
 from paignion.exceptions import PaignionUsedWithItemException
 from paignion.action_compiler import ActionCompiler
 
@@ -13,8 +15,8 @@ class PaignionUsedWithItem(object):
         self,
         name,
         effect_message,
-        consumes_subject=True,
-        consumes_object=True,
+        consumes_subject=False,
+        consumes_object=False,
         actions=None,
     ):
         """Construct a new instance of PaignionUsedWithItem.
@@ -50,6 +52,8 @@ class PaignionUsedWithItem(object):
         self.consumes_subject = False if not self.consumes_subject else True
         # Object should not be consumed by default
         self.consumes_object = False if not self.consumes_object else True
+        # Actions should contain a list of actions
+        self.actions = [] if not self.actions else self.actions
 
         # Item name is mandatory
         if not self.name:
@@ -60,6 +64,15 @@ class PaignionUsedWithItem(object):
             raise PaignionUsedWithItemException(
                 f"Effect message missing for used_with item `{self.name}`"
             )
+
+        # Actions should be a list
+        if type(self.actions) != list:
+            raise PaignionUsedWithItemException(
+                f"Actions should be a list for used_with item `{self.name}`"
+            )
+
+        # All actions should be strings
+        self.actions = [str(a) for a in self.actions]
 
     def dump(self):
         """Dump a dictionary containing all of the data of the `used_with` item.

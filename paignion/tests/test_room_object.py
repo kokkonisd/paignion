@@ -1,6 +1,7 @@
 import unittest
 
 from paignion.room import PaignionRoom
+from paignion.item import PaignionItem
 from paignion.exceptions import PaignionRoomException
 
 
@@ -39,23 +40,100 @@ class TestRoomObject(unittest.TestCase):
         self.assertEqual(room.intangible_items, [])
 
     def test_missing_name_and_description(self):
-        with self.assertRaises(TypeError):
+        with self.assertRaises(TypeError) as err:
             room = PaignionRoom()
 
-        with self.assertRaises(TypeError):
+        self.assertEqual(
+            str(err.exception),
+            "__init__() missing 2 required positional arguments: 'name' and "
+            "'description'",
+        )
+
+        with self.assertRaises(TypeError) as err:
             room = PaignionRoom(name="test name")
 
-        with self.assertRaises(TypeError):
+        self.assertEqual(
+            str(err.exception),
+            "__init__() missing 1 required positional argument: 'description'",
+        )
+
+        with self.assertRaises(TypeError) as err:
             room = PaignionRoom(description="test description")
 
-        with self.assertRaises(PaignionRoomException):
+        self.assertEqual(
+            str(err.exception),
+            "__init__() missing 1 required positional argument: 'name'",
+        )
+
+        with self.assertRaises(PaignionRoomException) as err:
             room = PaignionRoom(name=None, description="test description")
 
-        with self.assertRaises(PaignionRoomException):
+        self.assertEqual(
+            str(err.exception),
+            "Name missing for room",
+        )
+
+        with self.assertRaises(PaignionRoomException) as err:
             room = PaignionRoom(name="test name", description=None)
 
-        with self.assertRaises(PaignionRoomException):
+        self.assertEqual(
+            str(err.exception),
+            "Description missing for room `test name`",
+        )
+
+        with self.assertRaises(PaignionRoomException) as err:
             room = PaignionRoom(name=None, description=None)
+
+        self.assertEqual(
+            str(err.exception),
+            "Name missing for room",
+        )
+
+    def test_passing_nonlists_to_tangible_and_intangible_items(self):
+        with self.assertRaises(PaignionRoomException) as err:
+            room = PaignionRoom(
+                name="test name", description="test description", tangible_items=1
+            )
+
+        self.assertEqual(
+            str(err.exception), "Tangible items should be a list for room `test name`"
+        )
+
+        with self.assertRaises(PaignionRoomException) as err:
+            room = PaignionRoom(
+                name="test name",
+                description="test description",
+                intangible_items=PaignionItem(
+                    name="test item name", description="test item description"
+                ),
+            )
+
+        self.assertEqual(
+            str(err.exception), "Intangible items should be a list for room `test name`"
+        )
+
+    def test_passing_lists_of_wrong_type_to_tangible_and_intangible_items(self):
+        with self.assertRaises(PaignionRoomException) as err:
+            room = PaignionRoom(
+                name="test name",
+                description="test description",
+                tangible_items=[1, 2, 3],
+            )
+
+        self.assertEqual(
+            str(err.exception), "Item `1` has incorrect type for room `test name`"
+        )
+
+        with self.assertRaises(PaignionRoomException) as err:
+            room = PaignionRoom(
+                name="test name",
+                description="test description",
+                tangible_items=["abc", "def", "ghi"],
+            )
+
+        self.assertEqual(
+            str(err.exception), "Item `abc` has incorrect type for room `test name`"
+        )
 
     def test_dump(self):
         self.maxDiff = None
