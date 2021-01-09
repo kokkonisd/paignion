@@ -1,5 +1,7 @@
 # Paignion
 
+![CI](https://github.com/kokkonisd/paignion/workflows/CI/badge.svg)
+
 ![Screenshot of a game built with Paignion](screenshot.png)
 
 Paignion is a Python-generated, JavaScript-powered game engine for text adventure
@@ -333,8 +335,14 @@ $ python3 -m paignion init my_new_game # or build ...
 
 ## Developer notes
 
+Tests can (and should be) run like this:
+
+```
+$ python3 -m unittest discover -s paignion/tests
+```
+
 TODOs:
 
-- Add unit tests
+- Add more unit tests
 - Add conditional commands??? maybe???
 - Add part explaining the frontend engine in README
