@@ -23,7 +23,7 @@ class ActionToken(object):
         self.value = value
 
     def __str__(self):
-        return f"{self.type.upper()}_TOKEN (`{self.value}`)"
+        return f"{self.type.upper()}_TOKEN(`{self.value}`)"
 
     def __repr__(self):
         return self.__str__()
@@ -229,27 +229,32 @@ class ActionCompiler(object):
 
         if action_node.action() == "set":
             return (
-                f'getRoomOrItem("{action_node.element}")["{action_node.key}"] = '
+                f'getRoomOrItem("{self.strip_quotes(action_node.element)}")'
+                f'["{self.strip_quotes(action_node.key)}"] = '
                 f"{action_node.value};"
             )
         elif action_node.action() == "add":
             return (
-                f'getRoomOrItem("{action_node.element}")["{action_node.key}"] += '
+                f'getRoomOrItem("{self.strip_quotes(action_node.element)}")'
+                f'["{self.strip_quotes(action_node.key)}"] += '
                 f"{action_node.value};"
             )
         elif action_node.action() == "sub":
             return (
-                f'getRoomOrItem("{action_node.element}")["{action_node.key}"] -= '
+                f'getRoomOrItem("{self.strip_quotes(action_node.element)}")'
+                f'["{self.strip_quotes(action_node.key)}"] -= '
                 f"{action_node.value};"
             )
         elif action_node.action() == "mul":
             return (
-                f'getRoomOrItem("{action_node.element}")["{action_node.key}"] *= '
+                f'getRoomOrItem("{self.strip_quotes(action_node.element)}")'
+                f'["{self.strip_quotes(action_node.key)}"] *= '
                 f"{action_node.value};"
             )
         elif action_node.action() == "div":
             return (
-                f'getRoomOrItem("{action_node.element}")["{action_node.key}"] /= '
+                f'getRoomOrItem("{self.strip_quotes(action_node.element)}")'
+                f'["{self.strip_quotes(action_node.key)}"] /= '
                 f"{action_node.value};"
             )
 
@@ -529,7 +534,7 @@ class ActionCompiler(object):
         :type token_list: list
         :return: the integer (in int form of course)
         """
-        return int(self.consume("int", token_list).value)
+        return int(self.consume("integer", token_list).value)
 
     def consume(self, expected_type, token_list):
         """Consume a token of an expected type from a token list.
@@ -543,6 +548,12 @@ class ActionCompiler(object):
         :type token_list: list
         :return: the consumed token
         """
+        # If the token list is empty, there's a problem
+        if not token_list:
+            raise PaignionActionCompilerException(
+                f"Expected token type `{expected_type}` but there are no more tokens"
+            )
+
         token = token_list.pop(0)
 
         if token.type == expected_type:
@@ -567,3 +578,22 @@ class ActionCompiler(object):
         :return: True if the types match, False otherwise
         """
         return token_list[index].type == expected_type
+
+    def strip_quotes(self, string):
+        """Strip the quotes off of a string if it has any.
+
+        :param string: a string
+        :type string: str
+        :return: the same string, but without quotes
+        """
+
+        if string[0] in ('"', "'") or string[-1] in ('"', "'"):
+            # If there are quotes only on one end, raise an exception
+            if not (string[0] in ('"', "'") and string[-1] in ('"', "'")):
+                raise PaignionActionCompilerException(
+                    f"String `{string}` only has quotes on one side"
+                )
+
+            return string[1:-1]
+
+        return string
