@@ -227,6 +227,9 @@ class ActionCompiler(object):
         """
         action_node = self.parse_action(action)
 
+        if action_node == None:
+            return ""
+
         if action_node.action() == "set":
             return (
                 f'getRoomOrItem("{self.strip_quotes(action_node.element)}")'

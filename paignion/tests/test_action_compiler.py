@@ -5,6 +5,48 @@ from paignion.exceptions import PaignionActionCompilerException
 
 
 class TestActionCompiler(unittest.TestCase):
+    def test_random_commands(self):
+        ac = ActionCompiler()
+
+        # Pure whitespace should pass, but should compile to nothing
+        res = ac.compile_action("  \t\t\t\t     \t   ")
+        self.assertEqual(res, "")
+
+        with self.assertRaises(PaignionActionCompilerException) as err:
+            ac.compile_action('write "haha" in description')
+
+        self.assertEqual(
+            str(err.exception),
+            "Undefined structure starting with `IDENTIFIER_TOKEN(`write`)` for action "
+            '`write "haha" in description`',
+        )
+
+        with self.assertRaises(PaignionActionCompilerException) as err:
+            ac.compile_action("agdsjakgdjh")
+
+        self.assertEqual(
+            str(err.exception),
+            "Undefined structure starting with `IDENTIFIER_TOKEN(`agdsjakgdjh`)` for "
+            "action `agdsjakgdjh`",
+        )
+
+        with self.assertRaises(PaignionActionCompilerException) as err:
+            ac.compile_action('m"_test"')
+
+        self.assertEqual(
+            str(err.exception),
+            'Undefined structure starting with `MD_STRING_TOKEN(`m"_test"`)` for '
+            'action `m"_test"`',
+        )
+
+        with self.assertRaises(PaignionActionCompilerException) as err:
+            ac.compile_action("137")
+
+        self.assertEqual(
+            str(err.exception),
+            "Undefined structure starting with `INTEGER_TOKEN(`137`)` for action `137`",
+        )
+
     def test_normal_set_command(self):
         ac = ActionCompiler()
 
@@ -247,3 +289,21 @@ class TestActionCompiler(unittest.TestCase):
             str(err.exception),
             "Expected token type `string` but got `identifier`",
         )
+
+    def test_normal_sub_command(self):
+        pass  # TODO
+
+    def test_failed_sub_command(self):
+        pass  # TODO
+
+    def test_normal_mul_command(self):
+        pass  # TODO
+
+    def test_failed_mul_command(self):
+        pass  # TODO
+
+    def test_normal_div_command(self):
+        pass  # TODO
+
+    def test_failed_div_command(self):
+        pass  # TODO
