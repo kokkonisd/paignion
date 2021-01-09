@@ -16,7 +16,7 @@ from paignion.definitions import (
 )
 from paignion.parser import PaignionParser
 from paignion.tools import info, fail
-from paignion.exception import PaignionException
+from paignion.exceptions import PaignionException
 
 
 def paignion_init(namespace):

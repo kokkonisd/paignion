@@ -1,12 +1,15 @@
 import os
 
 
-__version__ = "0.0.5"
+# The current version of Paignion
+__version__ = "0.0.6"
 
+# The base directory of the project
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# The directory of the frontend files
 FRONTEND_DIR = os.path.join(BASE_DIR, "frontend")
 
-
+# The definition of the 6 possible room directions
 DIRECTIONS = [
     "north",
     "east",
@@ -16,12 +19,14 @@ DIRECTIONS = [
     "down",
 ]
 
+# Markdown extensions for the Markdown renderer
 MD_EXTENSIONS = [
     "pymdownx.tilde",
     "pymdownx.emoji",
 ]
 
 
+# The HTML game file template
 INDEX_HTML_TEMPLATE = """\
 <!DOCTYPE html>
 <html>
@@ -41,6 +46,7 @@ INDEX_HTML_TEMPLATE = """\
 """
 
 
+# A simple template for an origin room
 SIMPLE_ORIGIN_ROOM_TEMPLATE = """\
 ---
 ## Paignion v{}
@@ -77,6 +83,7 @@ This is the start room. There is a painting on the wall and a book on the _floor
 """
 
 
+# A simple template for a second room
 SIMPLE_SECOND_ROOM_TEMPLATE = """\
 ---
 ## Paignion v{}
@@ -88,6 +95,8 @@ west: origin
 This is the second room. Not much going on here.
 """
 
+
+# A mapping of colors to terminal color codes
 TERMINAL_COLORS = {
     "yellow": "\033[33m{}\033[0m",
     "orange": "\033[91m{}\033[0m",

@@ -6,7 +6,7 @@ import glob
 
 from paignion.definitions import __version__
 from paignion.tools import color_message
-from paignion.exception import PaignionException
+from paignion.exceptions import PaignionException
 from paignion.__main__ import paignion_build
 from argparse import Namespace
 

@@ -4,22 +4,26 @@ import markdown
 from paignion.definitions import MD_EXTENSIONS, TERMINAL_COLORS
 
 
-def markdownify(string):
-    if not string:
-        return string
+def markdownify(md_string):
+    """Convert a Markdown string to HTML.
 
-    return markdown.markdown(string, extensions=MD_EXTENSIONS)
+    :param md_string: the Markdown string
+    :type md_string: str
+    """
+    if not md_string:
+        return md_string
+
+    # Apply the Markdown conversion along with extensions
+    return markdown.markdown(md_string, extensions=MD_EXTENSIONS)
 
 
-def color_message(message, color, end="\n"):
+def color_message(message, color):
     """Color a message.
 
-    :param message:  The message to print.
-    :type message:  string
-    :param color:    The color to print in.
-    :type color:    string (TERMINAL_COLORS dictionary in definitions.py)
-    :param end:      The end character/string ('\n' by default)
-    :type end:      string
+    :param message: the message to color
+    :type message: str
+    :param color: the color to use
+    :type color: str (TERMINAL_COLORS dictionary in definitions.py)
     """
     if color not in TERMINAL_COLORS:
         return
@@ -30,10 +34,10 @@ def color_message(message, color, end="\n"):
 def info(message, end="\n"):
     """Print an info message.
 
-    :param message:  The message to print.
-    :type message:  string
-    :param end:      The end character/string ('\n' by default)
-    :type end:      string
+    :param message: the info message to print
+    :type message: str
+    :param end: the end character/string ('\n' by default)
+    :type end: str
     """
     print(color_message(message=f"[paignion] {message}", color="yellow"), end=end)
 
@@ -41,23 +45,21 @@ def info(message, end="\n"):
 def warn(message, end="\n"):
     """Print a warning message.
 
-    :param message:  The message to print.
-    :type message:  string
-    :param end:      The end character/string ('\n' by default)
-    :type end:      string
+    :param message: the warning message to print
+    :type message: str
+    :param end: the end character/string ('\n' by default)
+    :type end: str
     """
     print(color_message(message=f"[paignion] /!\\ {message}", color="orange"), end=end)
 
 
 def fail(message, end="\n"):
-    """Print a fail message, cleans up and exits.
+    """Print a fail message and exits.
 
-    :param message:  The message to print.
-    :type message:  string
-    :param message:  A list of files to clean up.
-    :type message:  list
-    :param end:      The end character/string ('\n' by default)
-    :type       end:      string
+    :param message: the fail message to print
+    :type message: str
+    :param end: the end character/string ('\n' by default)
+    :type end: str
     """
     print(color_message(message=f"[paignion] {message}", color="red"), end=end)
     exit(1)
