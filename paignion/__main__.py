@@ -69,7 +69,6 @@ def paignion_build(namespace):
     subprocess.run(
         [
             "cp",
-            os.path.join(FRONTEND_DIR, "index.html"),
             os.path.join(FRONTEND_DIR, "main.css"),
             os.path.join(FRONTEND_DIR, "paignion.js"),
             build_dir,
