@@ -63,6 +63,8 @@ def paignion_build(namespace):
     build_dir = os.path.join(namespace.project_dir, "build")
     info(f"Building game `{namespace.project_dir}`")
 
+    # Remove the build dir if it exists
+    subprocess.run(["rm", "-rf", build_dir], stdout=subprocess.PIPE)
     # Make the build dir
     subprocess.run(["mkdir", "-p", build_dir], stdout=subprocess.PIPE)
     # Copy the frontend files over
