@@ -20,9 +20,8 @@ jobs:
     - name: Run black
       run: python3 -m black paignion/*.py tests/*.py
     - name: Run tox
-      env:
-        CODECOV_TOKEN: "72cfb823-5c32-4d03-943e-7c03a37ee1f2"
-      run: python3 -m tox && bash <(curl -s https://codecov.io/bash)
+      run: python3 -m tox
+    - uses: codecov/codecov-action@v1
 
 
   macos-build:
