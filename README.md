@@ -1,6 +1,7 @@
 # Paignion
 
 ![CI](https://github.com/kokkonisd/paignion/workflows/CI/badge.svg)
+![codecov](https://codecov.io/gh/kokkonisd/paignion/branch/master/graph/badge.svg?token=KmooZEYu1b)
 
 ![Screenshot of a game built with Paignion](screenshot.png)
 
