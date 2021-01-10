@@ -1,0 +1,40 @@
+{
+    "tangible_items_room": {
+        "description": "<p>description</p>",
+        "down": null,
+        "east": null,
+        "items": {
+            "intangible": [],
+            "tangible": [
+                {
+                    "amount": 1,
+                    "description": "<p>An <em>old</em> book.</p>",
+                    "effect": null,
+                    "name": "book",
+                    "used_with": [],
+                    "visible": true
+                },
+                {
+                    "amount": 100,
+                    "description": "<p>A <strong>golden</strong> coin!</p>",
+                    "effect": null,
+                    "name": "coin",
+                    "used_with": [],
+                    "visible": true
+                },
+                {
+                    "amount": "inf",
+                    "description": "<p>A <del>particle</del> grain of sand.</p>",
+                    "effect": "boring",
+                    "name": "sand",
+                    "used_with": [],
+                    "visible": true
+                }
+            ]
+        },
+        "north": null,
+        "south": null,
+        "up": null,
+        "west": null
+    }
+}

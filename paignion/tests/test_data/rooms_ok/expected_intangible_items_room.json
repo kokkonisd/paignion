@@ -1,0 +1,40 @@
+{
+    "intangible_items_room": {
+        "description": "<p>description</p>",
+        "down": null,
+        "east": null,
+        "items": {
+            "intangible": [
+                {
+                    "amount": 1,
+                    "description": null,
+                    "effect": null,
+                    "name": "sky",
+                    "used_with": [],
+                    "visible": false
+                },
+                {
+                    "amount": 1,
+                    "description": "<p>A couple of <em>very</em> pretty paintings.</p>",
+                    "effect": null,
+                    "name": "paintings",
+                    "used_with": [],
+                    "visible": true
+                },
+                {
+                    "amount": "inf",
+                    "description": "<p>A <del>particle</del> grain of sand.</p>",
+                    "effect": "boring",
+                    "name": "sand",
+                    "used_with": [],
+                    "visible": true
+                }
+            ],
+            "tangible": []
+        },
+        "north": null,
+        "south": null,
+        "up": null,
+        "west": null
+    }
+}

@@ -1,0 +1,15 @@
+{
+    "full_directions_room": {
+        "description": "<p>description</p>",
+        "down": "hell",
+        "east": "the land of the rising sun",
+        "items": {
+            "intangible": [],
+            "tangible": []
+        },
+        "north": "cold",
+        "south": "heat",
+        "up": "heavens",
+        "west": "the far west"
+    }
+}

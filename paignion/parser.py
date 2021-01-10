@@ -56,7 +56,7 @@ class PaignionParser(object):
         for room_file in room_files:
             with open(room_file, "r") as f:
                 room_data.update(
-                    self.parse_room_file(
+                    self.parse_room_data(
                         room_data=f.read(),
                         room_name=os.path.splitext(room_file)[0].split("/")[-1],
                     )
@@ -64,7 +64,7 @@ class PaignionParser(object):
 
         return room_data
 
-    def parse_room_file(self, room_data, room_name):
+    def parse_room_data(self, room_data, room_name):
         """Parse a single room file.
 
         Parses the YAML header and the Markdown body of a room file and generates a

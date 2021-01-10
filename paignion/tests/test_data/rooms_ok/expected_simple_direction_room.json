@@ -1,0 +1,15 @@
+{
+    "simple_direction_room": {
+        "description": "<p>description</p>",
+        "down": null,
+        "east": null,
+        "items": {
+            "intangible": [],
+            "tangible": []
+        },
+        "north": null,
+        "south": null,
+        "up": "heavens",
+        "west": null
+    }
+}

@@ -1,0 +1,57 @@
+{
+    "full_items_room": {
+        "description": "<p>description</p>",
+        "down": null,
+        "east": null,
+        "items": {
+            "intangible": [
+                {
+                    "amount": 1,
+                    "description": "<p>A classic wooden door.</p>",
+                    "effect": null,
+                    "name": "door",
+                    "used_with": [
+                        {
+                            "actions": "getRoomOrItem(\"full_items_room\")[\"west\"] = \"other_room\";",
+                            "consumes_object": false,
+                            "consumes_subject": true,
+                            "effect_message": "<p>The key unlocks the door.</p>",
+                            "name": "key"
+                        }
+                    ],
+                    "visible": true
+                },
+                {
+                    "amount": 1,
+                    "description": "<p>An old bathtub full of acid.</p>",
+                    "effect": null,
+                    "name": "bathtub",
+                    "used_with": [
+                        {
+                            "actions": "getRoomOrItem(\"key\")[\"description\"] = \"<p>A cleaned-up key. Some rust marks are still visible, where the acid didn't get to eat away at the rust.</p>\";",
+                            "consumes_object": false,
+                            "consumes_subject": false,
+                            "effect_message": "<p>You plunge the key into the acid bath, cleaning it somewhat.</p>",
+                            "name": "key"
+                        }
+                    ],
+                    "visible": true
+                }
+            ],
+            "tangible": [
+                {
+                    "amount": 1,
+                    "description": "<p>A rusty key. Looks like it could still work though.</p>",
+                    "effect": null,
+                    "name": "key",
+                    "used_with": [],
+                    "visible": true
+                }
+            ]
+        },
+        "north": null,
+        "south": null,
+        "up": null,
+        "west": null
+    }
+}

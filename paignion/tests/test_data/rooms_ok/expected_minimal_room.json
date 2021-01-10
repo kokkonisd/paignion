@@ -1,0 +1,15 @@
+{
+    "minimal_room": {
+        "description": "<p>description</p>",
+        "down": null,
+        "east": null,
+        "items": {
+            "intangible": [],
+            "tangible": []
+        },
+        "north": null,
+        "south": null,
+        "up": null,
+        "west": null
+    }
+}
