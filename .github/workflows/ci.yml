@@ -20,7 +20,7 @@ jobs:
     - name: Run black
       run: python3 -m black paignion/*.py tests/*.py
     - name: Run tox
-      run: python3 -m tox
+      run: python3 -m tox && codecov
     - uses: codecov/codecov-action@v1
 
 
