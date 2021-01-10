@@ -3,7 +3,12 @@ import json
 import os
 
 from paignion.parser import PaignionParser
-from paignion.exceptions import PaignionException
+from paignion.exceptions import (
+    PaignionException,
+    PaignionRoomException,
+    PaignionItemException,
+    PaignionUsedWithItemException,
+)
 
 TEST_DATA_DIR = "tests/test_data"
 ROOMS_OK_DIR = os.path.join(TEST_DATA_DIR, "rooms_ok")
@@ -92,3 +97,151 @@ class TestRoomParser:
             expected_room = f.read()[:-1]  # Omit the newline at the end
 
         assert json.dumps(room, indent=4, sort_keys=True) == expected_room
+
+    def test_missing_description(self):
+        parser = PaignionParser()
+
+        with open(os.path.join(ROOMS_KO_DIR, "missing_description.md"), "r") as f:
+            room_data = f.read()
+
+        with pytest.raises(
+            PaignionRoomException,
+            match=r"Description missing for room `missing_description`",
+        ):
+            parser.parse_room_data(room_data=room_data, room_name="missing_description")
+
+    def test_missing_tangible_item_name(self):
+        parser = PaignionParser()
+
+        with open(
+            os.path.join(ROOMS_KO_DIR, "missing_tangible_item_name.md"), "r"
+        ) as f:
+            room_data = f.read()
+
+        with pytest.raises(
+            PaignionItemException,
+            match=r"Name missing for item",
+        ):
+            parser.parse_room_data(
+                room_data=room_data, room_name="missing_tangible_item_name"
+            )
+
+    def test_missing_tangible_item_description(self):
+        parser = PaignionParser()
+
+        with open(
+            os.path.join(ROOMS_KO_DIR, "missing_tangible_item_description.md"), "r"
+        ) as f:
+            room_data = f.read()
+
+        with pytest.raises(
+            PaignionItemException,
+            match=r"Description missing for item `test item`",
+        ):
+            parser.parse_room_data(
+                room_data=room_data, room_name="missing_tangible_item_description"
+            )
+
+    def test_missing_intangible_item_name(self):
+        parser = PaignionParser()
+
+        with open(
+            os.path.join(ROOMS_KO_DIR, "missing_intangible_item_name.md"), "r"
+        ) as f:
+            room_data = f.read()
+
+        with pytest.raises(
+            PaignionItemException,
+            match=r"Name missing for item",
+        ):
+            parser.parse_room_data(
+                room_data=room_data, room_name="missing_intangible_item_name"
+            )
+
+    def test_missing_intangible_item_description(self):
+        parser = PaignionParser()
+
+        with open(
+            os.path.join(ROOMS_KO_DIR, "missing_intangible_item_description.md"), "r"
+        ) as f:
+            room_data = f.read()
+
+        with pytest.raises(
+            PaignionItemException,
+            match=r"Description missing for item `test item`",
+        ):
+            parser.parse_room_data(
+                room_data=room_data, room_name="missing_intangible_item_description"
+            )
+
+    def test_missing_tangible_used_with_item_name(self):
+        parser = PaignionParser()
+
+        with open(
+            os.path.join(ROOMS_KO_DIR, "missing_tangible_used_with_item_name.md"), "r"
+        ) as f:
+            room_data = f.read()
+
+        with pytest.raises(
+            PaignionUsedWithItemException,
+            match=r"Name missing for used_with item",
+        ):
+            parser.parse_room_data(
+                room_data=room_data, room_name="missing_tangible_used_with_item_name"
+            )
+
+    def test_missing_tangible_used_with_item_effect_message(self):
+        parser = PaignionParser()
+
+        with open(
+            os.path.join(
+                ROOMS_KO_DIR, "missing_tangible_used_with_item_effect_message.md"
+            ),
+            "r",
+        ) as f:
+            room_data = f.read()
+
+        with pytest.raises(
+            PaignionUsedWithItemException,
+            match=r"Effect message missing for used_with item `test item`",
+        ):
+            parser.parse_room_data(
+                room_data=room_data,
+                room_name="missing_tangible_used_with_item_effect_message",
+            )
+
+    def test_missing_intangible_used_with_item_name(self):
+        parser = PaignionParser()
+
+        with open(
+            os.path.join(ROOMS_KO_DIR, "missing_intangible_used_with_item_name.md"), "r"
+        ) as f:
+            room_data = f.read()
+
+        with pytest.raises(
+            PaignionUsedWithItemException,
+            match=r"Name missing for used_with item",
+        ):
+            parser.parse_room_data(
+                room_data=room_data, room_name="missing_intangible_used_with_item_name"
+            )
+
+    def test_missing_intangible_used_with_item_effect_message(self):
+        parser = PaignionParser()
+
+        with open(
+            os.path.join(
+                ROOMS_KO_DIR, "missing_intangible_used_with_item_effect_message.md"
+            ),
+            "r",
+        ) as f:
+            room_data = f.read()
+
+        with pytest.raises(
+            PaignionUsedWithItemException,
+            match=r"Effect message missing for used_with item `test item`",
+        ):
+            parser.parse_room_data(
+                room_data=room_data,
+                room_name="missing_intangible_used_with_item_effect_message",
+            )
