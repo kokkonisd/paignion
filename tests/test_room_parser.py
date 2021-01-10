@@ -1,18 +1,17 @@
-import unittest
+import pytest
 import json
 import os
 
 from paignion.parser import PaignionParser
 from paignion.exceptions import PaignionException
 
-TEST_DATA_DIR = "paignion/tests/test_data"
+TEST_DATA_DIR = "tests/test_data"
 ROOMS_OK_DIR = os.path.join(TEST_DATA_DIR, "rooms_ok")
 ROOMS_KO_DIR = os.path.join(TEST_DATA_DIR, "rooms_ko")
 
 
-class TestRoomParser(unittest.TestCase):
+class TestRoomParser:
     def test_minimal_room(self):
-        self.maxDiff = None
         parser = PaignionParser()
 
         with open(os.path.join(ROOMS_OK_DIR, "minimal_room.md"), "r") as f:
@@ -21,10 +20,9 @@ class TestRoomParser(unittest.TestCase):
         with open(os.path.join(ROOMS_OK_DIR, "expected_minimal_room.json")) as f:
             expected_room = f.read()[:-1]  # Omit the newline at the end
 
-        self.assertEqual(json.dumps(room, indent=4, sort_keys=True), expected_room)
+        assert json.dumps(room, indent=4, sort_keys=True) == expected_room
 
     def test_simple_direction(self):
-        self.maxDiff = None
         parser = PaignionParser()
 
         with open(os.path.join(ROOMS_OK_DIR, "simple_direction_room.md"), "r") as f:
@@ -37,10 +35,9 @@ class TestRoomParser(unittest.TestCase):
         ) as f:
             expected_room = f.read()[:-1]  # Omit the newline at the end
 
-        self.assertEqual(json.dumps(room, indent=4, sort_keys=True), expected_room)
+        assert json.dumps(room, indent=4, sort_keys=True) == expected_room
 
     def test_full_directions(self):
-        self.maxDiff = None
         parser = PaignionParser()
 
         with open(os.path.join(ROOMS_OK_DIR, "full_directions_room.md"), "r") as f:
@@ -53,10 +50,9 @@ class TestRoomParser(unittest.TestCase):
         ) as f:
             expected_room = f.read()[:-1]  # Omit the newline at the end
 
-        self.assertEqual(json.dumps(room, indent=4, sort_keys=True), expected_room)
+        assert json.dumps(room, indent=4, sort_keys=True) == expected_room
 
     def test_tangible_items(self):
-        self.maxDiff = None
         parser = PaignionParser()
 
         with open(os.path.join(ROOMS_OK_DIR, "tangible_items_room.md"), "r") as f:
@@ -67,10 +63,9 @@ class TestRoomParser(unittest.TestCase):
         with open(os.path.join(ROOMS_OK_DIR, "expected_tangible_items_room.json")) as f:
             expected_room = f.read()[:-1]  # Omit the newline at the end
 
-        self.assertEqual(json.dumps(room, indent=4, sort_keys=True), expected_room)
+        assert json.dumps(room, indent=4, sort_keys=True) == expected_room
 
     def test_intangible_items(self):
-        self.maxDiff = None
         parser = PaignionParser()
 
         with open(os.path.join(ROOMS_OK_DIR, "intangible_items_room.md"), "r") as f:
@@ -83,10 +78,9 @@ class TestRoomParser(unittest.TestCase):
         ) as f:
             expected_room = f.read()[:-1]  # Omit the newline at the end
 
-        self.assertEqual(json.dumps(room, indent=4, sort_keys=True), expected_room)
+        assert json.dumps(room, indent=4, sort_keys=True) == expected_room
 
     def test_full_items(self):
-        self.maxDiff = None
         parser = PaignionParser()
 
         with open(os.path.join(ROOMS_OK_DIR, "full_items_room.md"), "r") as f:
@@ -97,4 +91,4 @@ class TestRoomParser(unittest.TestCase):
         with open(os.path.join(ROOMS_OK_DIR, "expected_full_items_room.json")) as f:
             expected_room = f.read()[:-1]  # Omit the newline at the end
 
-        self.assertEqual(json.dumps(room, indent=4, sort_keys=True), expected_room)
+        assert json.dumps(room, indent=4, sort_keys=True) == expected_room

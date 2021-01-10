@@ -7,25 +7,31 @@ on:
     branches: [ master ]
 
 jobs:
-  ubuntu_build:
+  ubuntu-build:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Install setuptools
       run: sudo apt-get install python3-setuptools
+    - name: Install wheel
+      run: pip3 install -U wheel --user
     - name: Install Python dependencies
       run: pip3 install -r requirements.txt
-    - name: Run tests
-      run: python3 -m unittest discover -s paignion/tests
+    - name: Run black
+      run: python3 -m black paignion/*.py tests/*.py
+    - name: Run tox
+      env:
+        CODECOV_TOKEN: "72cfb823-5c32-4d03-943e-7c03a37ee1f2"
+      run: python3 -m tox && bash <(curl -s https://codecov.io/bash)
 
 
-  macos_build:
+  macos-build:
     runs-on: macos-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Install Python dependencies
       run: pip3 install -r requirements.txt
-    - name: Run tests
-      run: python3 -m unittest discover -s paignion/tests
+    - name: Run black
+      run: black paignion/*.py tests/*.py
+    - name: Run tox
+      run: tox

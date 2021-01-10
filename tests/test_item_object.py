@@ -1,4 +1,4 @@
-import unittest
+import pytest
 
 from paignion.item import PaignionItem
 from paignion.used_with_item import PaignionUsedWithItem
@@ -17,57 +17,46 @@ EXPECTED_DEFAULT_ITEM_DUMP = """\
 """
 
 
-class TestItemObject(unittest.TestCase):
+class TestItemObject:
     def test_item_defaults(self):
         item = PaignionItem(name="test name", description="test description")
 
-        self.assertEqual(item.name, "test name")
-        self.assertEqual(item.description, "test description")
-        self.assertEqual(item.amount, 1)
-        self.assertEqual(item.visible, True)
-        self.assertEqual(item.effect, None)
-        self.assertEqual(item.used_with, [])
+        assert item.name == "test name"
+        assert item.description == "test description"
+        assert item.amount == 1
+        assert item.visible == True
+        assert item.effect == None
+        assert item.used_with == []
 
     def test_missing_name_and_description(self):
-        with self.assertRaises(TypeError) as err:
+        with pytest.raises(
+            TypeError,
+            match=r".+ missing 2 required positional arguments: 'name' and "
+            r"'description'",
+        ):
             item = PaignionItem()
 
-        self.assertEqual(
-            str(err.exception),
-            "__init__() missing 2 required positional arguments: 'name' and "
-            "'description'",
-        )
-
-        with self.assertRaises(TypeError) as err:
+        with pytest.raises(
+            TypeError,
+            match=r".+ missing 1 required positional argument: 'description'",
+        ):
             item = PaignionItem(name="test name")
 
-        self.assertEqual(
-            str(err.exception),
-            "__init__() missing 1 required positional argument: 'description'",
-        )
-
-        with self.assertRaises(TypeError) as err:
+        with pytest.raises(
+            TypeError, match=r".+ missing 1 required positional argument: 'name'"
+        ):
             item = PaignionItem(description="test description")
 
-        self.assertEqual(
-            str(err.exception),
-            "__init__() missing 1 required positional argument: 'name'",
-        )
-
-        with self.assertRaises(PaignionItemException) as err:
+        with pytest.raises(PaignionItemException, match=r"Name missing for item"):
             item = PaignionItem(name=None, description="test description")
 
-        self.assertEqual(str(err.exception), "Name missing for item")
-
-        with self.assertRaises(PaignionItemException) as err:
+        with pytest.raises(
+            PaignionItemException, match=r"Description missing for item `test name`"
+        ):
             item = PaignionItem(name="test name", description=None)
 
-        self.assertEqual(str(err.exception), "Description missing for item `test name`")
-
-        with self.assertRaises(PaignionItemException) as err:
+        with pytest.raises(PaignionItemException, match=r"Name missing for item"):
             item = PaignionItem(name=None, description=None)
-
-        self.assertEqual(str(err.exception), "Name missing for item")
 
     def test_accepts_integer_or_inf_amount(self):
         item = PaignionItem(name="test name", description="test description", amount=1)
@@ -80,66 +69,60 @@ class TestItemObject(unittest.TestCase):
         )
 
     def test_rejects_invalid_amount(self):
-        with self.assertRaises(ValueError) as err:
+        with pytest.raises(
+            ValueError, match=r"invalid literal for int\(\) with base 10: 'abc'"
+        ):
             item = PaignionItem(
                 name="test name", description="test description", amount="abc"
             )
 
-        self.assertEqual(
-            str(err.exception), "invalid literal for int() with base 10: 'abc'"
-        )
-
-        with self.assertRaises(ValueError) as err:
+        with pytest.raises(
+            ValueError, match=r"invalid literal for int\(\) with base 10: '10f'"
+        ):
             item = PaignionItem(
                 name="test name", description="test description", amount="10f"
             )
 
-        self.assertEqual(
-            str(err.exception), "invalid literal for int() with base 10: '10f'"
-        )
-
-        with self.assertRaises(PaignionItemException) as err:
+        with pytest.raises(
+            PaignionItemException, match=r"Negative or zero amount for item `test name`"
+        ):
             item = PaignionItem(
                 name="test name", description="test description", amount=0
             )
 
-        self.assertEqual(
-            str(err.exception), "Negative or zero amount for item `test name`"
-        )
-
-        with self.assertRaises(PaignionItemException) as err:
+        with pytest.raises(
+            PaignionItemException, match=r"Negative or zero amount for item `test name`"
+        ):
             item = PaignionItem(
                 name="test name", description="test description", amount=-10
             )
-
-        self.assertEqual(
-            str(err.exception), "Negative or zero amount for item `test name`"
-        )
 
     def test_accepts_correct_visible_flag(self):
         item = PaignionItem(
             name="test name", description="test description", visible=True
         )
 
-        self.assertEqual(item.visible, True)
+        assert item.visible == True
 
         item = PaignionItem(
             name="test name", description="test description", visible=False
         )
 
-        self.assertEqual(item.visible, False)
+        assert item.visible == False
 
     def test_passing_nonlist_values_to_used_with(self):
-        with self.assertRaises(PaignionItemException) as err:
+        with pytest.raises(
+            PaignionItemException,
+            match=r"used_with items should be a list for item `test name`",
+        ):
             room = PaignionItem(
                 name="test name", description="test description", used_with=1
             )
 
-        self.assertEqual(
-            str(err.exception), "used_with items should be a list for item `test name`"
-        )
-
-        with self.assertRaises(PaignionItemException) as err:
+        with pytest.raises(
+            PaignionItemException,
+            match=r"used_with items should be a list for item `test name`",
+        ):
             room = PaignionItem(
                 name="test name",
                 description="test description",
@@ -149,36 +132,28 @@ class TestItemObject(unittest.TestCase):
                 ),
             )
 
-        self.assertEqual(
-            str(err.exception), "used_with items should be a list for item `test name`"
-        )
-
     def test_passing_lists_of_wrong_type_to_used_with(self):
-        with self.assertRaises(PaignionItemException) as err:
+        with pytest.raises(
+            PaignionItemException,
+            match=r"used_with item `1` has incorrect type for item `test name`",
+        ):
             room = PaignionItem(
                 name="test name", description="test description", used_with=[1, 2, 3]
             )
 
-        self.assertEqual(
-            str(err.exception),
-            "used_with item `1` has incorrect type for item " "`test name`",
-        )
-
-        with self.assertRaises(PaignionItemException) as err:
+        with pytest.raises(
+            PaignionItemException,
+            match=r"used_with item `abc` has incorrect type for item `test name`",
+        ):
             room = PaignionItem(
                 name="test name",
                 description="test description",
                 used_with=["abc", "def", "ghi"],
             )
 
-        self.assertEqual(
-            str(err.exception),
-            "used_with item `abc` has incorrect type for item " "`test name`",
-        )
-
     def test_dump(self):
         self.maxDiff = None
 
         item = PaignionItem(name="test name", description="test description")
 
-        self.assertEqual(str(item), EXPECTED_DEFAULT_ITEM_DUMP)
+        assert str(item) == EXPECTED_DEFAULT_ITEM_DUMP

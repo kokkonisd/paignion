@@ -1,4 +1,4 @@
-import unittest
+import pytest
 
 from paignion.used_with_item import PaignionUsedWithItem
 from paignion.exceptions import PaignionUsedWithItemException
@@ -15,62 +15,54 @@ EXPECTED_DEFAULT_USED_WITH_ITEM_DUMP = """\
 """
 
 
-class TestUsedWithItemObject(unittest.TestCase):
+class TestUsedWithItemObject:
     def test_used_with_item_defaults(self):
         uw_item = PaignionUsedWithItem(
             name="test name", effect_message="test effect message"
         )
 
-        self.assertEqual(uw_item.name, "test name")
-        self.assertEqual(uw_item.effect_message, "test effect message")
-        self.assertEqual(uw_item.consumes_subject, False)
-        self.assertEqual(uw_item.consumes_object, False)
-        self.assertEqual(uw_item.actions, "")
+        assert uw_item.name == "test name"
+        assert uw_item.effect_message == "test effect message"
+        assert uw_item.consumes_subject == False
+        assert uw_item.consumes_object == False
+        assert uw_item.actions == ""
 
     def test_missing_name_and_effect_message(self):
-        with self.assertRaises(TypeError) as err:
+        with pytest.raises(
+            TypeError,
+            match=r".+ missing 2 required positional arguments: 'name' and "
+            r"'effect_message'",
+        ):
             uw_item = PaignionUsedWithItem()
 
-        self.assertEqual(
-            str(err.exception),
-            "__init__() missing 2 required positional arguments: 'name' and "
-            "'effect_message'",
-        )
-
-        with self.assertRaises(TypeError) as err:
+        with pytest.raises(
+            TypeError,
+            match=r".+ missing 1 required positional argument: 'effect_message'",
+        ):
             uw_item = PaignionUsedWithItem(name="test name")
 
-        self.assertEqual(
-            str(err.exception),
-            "__init__() missing 1 required positional argument: 'effect_message'",
-        )
-
-        with self.assertRaises(TypeError) as err:
+        with pytest.raises(
+            TypeError, match=r".+ missing 1 required positional argument: 'name'"
+        ):
             uw_item = PaignionUsedWithItem(effect_message="test effect message")
 
-        self.assertEqual(
-            str(err.exception),
-            "__init__() missing 1 required positional argument: 'name'",
-        )
-
-        with self.assertRaises(PaignionUsedWithItemException) as err:
+        with pytest.raises(
+            PaignionUsedWithItemException, match=r"Name missing for used_with item"
+        ):
             uw_item = PaignionUsedWithItem(
                 name=None, effect_message="test effect message"
             )
 
-        self.assertEqual(str(err.exception), "Name missing for used_with item")
-
-        with self.assertRaises(PaignionUsedWithItemException) as err:
+        with pytest.raises(
+            PaignionUsedWithItemException,
+            match=r"Effect message missing for used_with item `test name`",
+        ):
             uw_item = PaignionUsedWithItem(name="test name", effect_message=None)
 
-        self.assertEqual(
-            str(err.exception), "Effect message missing for used_with item `test name`"
-        )
-
-        with self.assertRaises(PaignionUsedWithItemException) as err:
+        with pytest.raises(
+            PaignionUsedWithItemException, match=r"Name missing for used_with item"
+        ):
             uw_item = PaignionUsedWithItem(name=None, effect_message=None)
-
-        self.assertEqual(str(err.exception), "Name missing for used_with item")
 
     def test_accepts_correct_consume_flags(self):
         uw_item = PaignionUsedWithItem(
@@ -79,8 +71,8 @@ class TestUsedWithItemObject(unittest.TestCase):
             consumes_subject=False,
             consumes_object=False,
         )
-        self.assertEqual(uw_item.consumes_subject, False)
-        self.assertEqual(uw_item.consumes_object, False)
+        assert uw_item.consumes_subject == False
+        assert uw_item.consumes_object == False
 
         uw_item = PaignionUsedWithItem(
             name="test name",
@@ -88,8 +80,8 @@ class TestUsedWithItemObject(unittest.TestCase):
             consumes_subject=False,
             consumes_object=True,
         )
-        self.assertEqual(uw_item.consumes_subject, False)
-        self.assertEqual(uw_item.consumes_object, True)
+        assert uw_item.consumes_subject == False
+        assert uw_item.consumes_object == True
 
         uw_item = PaignionUsedWithItem(
             name="test name",
@@ -97,8 +89,8 @@ class TestUsedWithItemObject(unittest.TestCase):
             consumes_subject=True,
             consumes_object=False,
         )
-        self.assertEqual(uw_item.consumes_subject, True)
-        self.assertEqual(uw_item.consumes_object, False)
+        assert uw_item.consumes_subject == True
+        assert uw_item.consumes_object == False
 
         uw_item = PaignionUsedWithItem(
             name="test name",
@@ -106,31 +98,27 @@ class TestUsedWithItemObject(unittest.TestCase):
             consumes_subject=True,
             consumes_object=True,
         )
-        self.assertEqual(uw_item.consumes_subject, True)
-        self.assertEqual(uw_item.consumes_object, True)
+        assert uw_item.consumes_subject == True
+        assert uw_item.consumes_object == True
 
     def test_passing_nonlist_values_to_actions(self):
-        with self.assertRaises(PaignionUsedWithItemException) as err:
+        with pytest.raises(
+            PaignionUsedWithItemException,
+            match=r"Actions should be a list for used_with item `test name`",
+        ):
             uw_item = PaignionUsedWithItem(
                 name="test name", effect_message="test effect message", actions=1
             )
 
-        self.assertEqual(
-            str(err.exception),
-            "Actions should be a list for used_with item `test name`",
-        )
-
-        with self.assertRaises(PaignionUsedWithItemException) as err:
+        with pytest.raises(
+            PaignionUsedWithItemException,
+            match=r"Actions should be a list for used_with item `test name`",
+        ):
             uw_item = PaignionUsedWithItem(
                 name="test name",
                 effect_message="test effect message",
                 actions='set(west, "hidden_room", origin)',
             )
-
-        self.assertEqual(
-            str(err.exception),
-            "Actions should be a list for used_with item `test name`",
-        )
 
     def test_dump(self):
         self.maxDiff = None
@@ -139,4 +127,4 @@ class TestUsedWithItemObject(unittest.TestCase):
             name="test name", effect_message="test effect message"
         )
 
-        self.assertEqual(str(uw_item), EXPECTED_DEFAULT_USED_WITH_ITEM_DUMP)
+        assert str(uw_item) == EXPECTED_DEFAULT_USED_WITH_ITEM_DUMP

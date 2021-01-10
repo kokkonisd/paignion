@@ -4,3 +4,6 @@ examples/*/build/
 build/
 dist/
 *.egg-info/
+.pytest_cache/
+.tox/
+.coverage
