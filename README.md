@@ -344,6 +344,5 @@ $ python3 -m unittest discover -s paignion/tests
 
 TODOs:
 
-- Add more unit tests
 - Add conditional commands??? maybe???
 - Add part explaining the frontend engine in README

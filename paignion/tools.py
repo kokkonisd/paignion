@@ -26,9 +26,9 @@ def color_message(message, color):
     :type color: str (TERMINAL_COLORS dictionary in definitions.py)
     """
     if color not in TERMINAL_COLORS:
-        return
-    else:
-        return TERMINAL_COLORS[color].format(message)
+        return message
+
+    return TERMINAL_COLORS[color].format(message)
 
 
 def info(message, end="\n"):
@@ -40,26 +40,3 @@ def info(message, end="\n"):
     :type end: str
     """
     print(color_message(message=f"[paignion] {message}", color="yellow"), end=end)
-
-
-def warn(message, end="\n"):
-    """Print a warning message.
-
-    :param message: the warning message to print
-    :type message: str
-    :param end: the end character/string ('\n' by default)
-    :type end: str
-    """
-    print(color_message(message=f"[paignion] /!\\ {message}", color="orange"), end=end)
-
-
-def fail(message, end="\n"):
-    """Print a fail message and exits.
-
-    :param message: the fail message to print
-    :type message: str
-    :param end: the end character/string ('\n' by default)
-    :type end: str
-    """
-    print(color_message(message=f"[paignion] {message}", color="red"), end=end)
-    exit(1)

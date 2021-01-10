@@ -15,7 +15,7 @@ from paignion.definitions import (
     __version__,
 )
 from paignion.parser import PaignionParser
-from paignion.tools import info, fail
+from paignion.tools import info
 from paignion.exceptions import PaignionException
 
 

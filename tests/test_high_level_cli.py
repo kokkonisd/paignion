@@ -20,6 +20,15 @@ class TestHighLevelCLI:
 
         assert res.stdout.decode("utf-8")[:-1] == __version__
 
+    def test_no_arguments(self):
+        res = subprocess.run(
+            [sys.executable, "-m", "paignion"],
+            stdout=subprocess.PIPE,
+        )
+
+        # When called with no arguments, it should print help and exit gracefully
+        assert res.returncode == 0
+
     def test_init_without_project_dir(self):
         with open(os.devnull, "w") as stderr:
             res = subprocess.run(
@@ -45,12 +54,9 @@ class TestHighLevelCLI:
         )
 
         # Make sure we got the right log message
-        assert (
-            res.stdout.decode("utf-8")[:-1],
-            color_message(
-                "[paignion] Initialized new Paignion game at " "`tests/default_game`",
-                color="yellow",
-            ),
+        assert res.stdout.decode("utf-8")[:-1] == color_message(
+            "[paignion] Initialized new Paignion game at " "`tests/default_game`",
+            color="yellow",
         )
 
         # Check that the project dir exists
@@ -98,19 +104,13 @@ class TestHighLevelCLI:
 
         # Make sure we got the right log message
         log_messages = res.stdout.decode("utf-8")[:-1].split("\n")
-        assert (
-            log_messages[0],
-            color_message(
-                "[paignion] Building game `tests/default_game`", color="yellow"
-            ),
+        assert log_messages[0] == color_message(
+            "[paignion] Building game `tests/default_game`", color="yellow"
         )
-        assert (
-            log_messages[1],
-            color_message(
-                "[paignion] Done! Your game can be found at "
-                "`tests/default_game/build/index.html`",
-                color="yellow",
-            ),
+        assert log_messages[1] == color_message(
+            "[paignion] Done! Your game can be found at "
+            "`tests/default_game/build/index.html`",
+            color="yellow",
         )
 
         # Check that the project dir still exists

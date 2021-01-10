@@ -1,18 +1,22 @@
+from paignion.tools import color_message
+
+
 class PaignionException(Exception):
+    def __init__(self, message):
+        super().__init__(color_message(message, color="red"))
+
+
+class PaignionRoomException(PaignionException):
     pass
 
 
-class PaignionRoomException(Exception):
+class PaignionItemException(PaignionException):
     pass
 
 
-class PaignionItemException(Exception):
+class PaignionUsedWithItemException(PaignionException):
     pass
 
 
-class PaignionUsedWithItemException(Exception):
-    pass
-
-
-class PaignionActionCompilerException(Exception):
+class PaignionActionCompilerException(PaignionException):
     pass

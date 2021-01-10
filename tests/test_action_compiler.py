@@ -261,7 +261,7 @@ class TestActionCompiler:
         assert res == 'getRoomOrItem("health points")["amount"] -= 10;'
 
         # Negative numbers should pass
-        res = ac.compile_action('sub(-2, amount, "health points")')
+        res = ac.compile_action('sub(-2, "amount", "health points")')
         assert res == 'getRoomOrItem("health points")["amount"] -= -2;'
 
         # Zero should also pass
@@ -360,7 +360,7 @@ class TestActionCompiler:
         assert res == 'getRoomOrItem("health points")["amount"] *= -2;'
 
         # Zero should also pass
-        res = ac.compile_action('mul(-0, amount, "health points")')
+        res = ac.compile_action('mul(-0, "amount", "health points")')
         assert res == 'getRoomOrItem("health points")["amount"] *= 0;'
 
     def test_failed_mul_command(self):
@@ -443,7 +443,7 @@ class TestActionCompiler:
     def test_normal_div_command(self):
         ac = ActionCompiler()
 
-        res = ac.compile_action('div(10, amount, "health points")')
+        res = ac.compile_action('div(10, "amount", "health points")')
         assert res == 'getRoomOrItem("health points")["amount"] /= 10;'
 
         # Whitespace should not matter

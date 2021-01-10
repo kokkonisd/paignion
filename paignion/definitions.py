@@ -23,6 +23,7 @@ DIRECTIONS = [
 MD_EXTENSIONS = [
     "pymdownx.tilde",
     "pymdownx.emoji",
+    "pymdownx.extra",
 ]
 
 

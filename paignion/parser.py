@@ -4,7 +4,12 @@ import json
 import yaml
 
 from paignion.definitions import DIRECTIONS
-from paignion.exceptions import PaignionException
+from paignion.exceptions import (
+    PaignionException,
+    PaignionRoomException,
+    PaignionItemException,
+    PaignionUsedWithItemException,
+)
 from paignion.room import PaignionRoom
 from paignion.item import PaignionItem
 from paignion.used_with_item import PaignionUsedWithItem
@@ -116,9 +121,9 @@ class PaignionParser(object):
                                     actions=uw_item.get("actions"),
                                 )
                             )
-                        except PaignionException:
+                        except PaignionUsedWithItemException:
                             raise PaignionException(
-                                f"Error parsing used_with item for tangible item"
+                                f"Could not parse used_with item for tangible item "
                                 f"`{tangible_item.get('name')}` in room `{room_name}`"
                             )
                 else:
@@ -135,10 +140,9 @@ class PaignionParser(object):
                             used_with=used_with,
                         )
                     )
-                except PaignionException:
+                except PaignionItemException:
                     raise PaignionException(
-                        f"Error parsing tangible item `{tangible_item.get('name')}` in"
-                        f"room `{room_name}`"
+                        f"Could not parse tangible item in room `{room_name}`"
                     )
 
             # Parse intangible items
@@ -167,9 +171,9 @@ class PaignionParser(object):
                                     actions=uw_item.get("actions"),
                                 )
                             )
-                        except PaignionException:
+                        except PaignionUsedWithItemException:
                             raise PaignionException(
-                                f"Error parsing used_with item for intangible item "
+                                f"Could not parse used_with item for intangible item "
                                 f"`{intangible_item['name']}` in room `{room_name}`"
                             )
                 else:
@@ -186,10 +190,9 @@ class PaignionParser(object):
                             used_with=used_with,
                         )
                     )
-                except PaignionException:
+                except PaignionItemException:
                     raise PaignionException(
-                        f"Error parsing intangible item `{intangible_item.get('name')}`"
-                        f" in room `{room_name}`"
+                        f"Could not parse intangible item in room `{room_name}`"
                     )
         else:
             tangible_items = []
@@ -209,7 +212,7 @@ class PaignionParser(object):
                 tangible_items=tangible_items,
                 intangible_items=intangible_items,
             )
-        except PaignionException:
-            raise PaignionException(f"Error parsing room `{room_name}`")
+        except PaignionRoomException:
+            raise PaignionException(f"Could not parse room `{room_name}`")
 
         return room.dump()
