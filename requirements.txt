@@ -4,4 +4,3 @@ pymdown-extensions==8.1
 black==20.8b1
 tox
 pre-commit
-codecov
