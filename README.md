@@ -336,10 +336,11 @@ $ python3 -m paignion init my_new_game # or build ...
 
 ## Developer notes
 
-Tests can (and should be) run like this:
+Tests can (and should be) run like this (after having installed the dependencies listed
+in `requirements.txt`):
 
 ```
-$ python3 -m unittest discover -s paignion/tests
+$ tox
 ```
 
 TODOs:
