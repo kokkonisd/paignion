@@ -52,9 +52,9 @@ def paignion_build(namespace):
         raise PaignionException(f"Invalid project directory `{namespace.project_dir}`")
 
     # Collect room files
-    room_files = [
-        f for f in glob.glob(os.path.join(namespace.project_dir, "rooms", "*.md"))
-    ]
+    room_files = sorted(
+        [f for f in glob.glob(os.path.join(namespace.project_dir, "rooms", "*.md"))]
+    )
 
     # Generate final GAME_DATA object
     GAME_DATA = parser.parse_room_files(room_files)
