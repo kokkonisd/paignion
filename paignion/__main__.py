@@ -5,6 +5,8 @@ import subprocess
 import os
 import glob
 import json
+import http.server
+import socketserver
 
 
 from paignion.definitions import (
@@ -110,6 +112,23 @@ def paignion_build(namespace):
     info(f"Done! Your game can be found at `{build_dir}/index.html`")
 
 
+def paignion_serve(namespace):
+    """Serve the game on an HTTP server."""
+    serve_dir = os.path.join(namespace.project_dir, "build")
+    if not os.path.isdir(serve_dir):
+        raise PaignionException(
+            f"{serve_dir} does not exist, have you built your game?"
+        )
+
+    os.chdir(serve_dir)
+    handler = http.server.SimpleHTTPRequestHandler
+
+    with socketserver.TCPServer((namespace.address, namespace.port), handler) as httpd:
+        info(f"Serving {serve_dir} at {namespace.address}:{namespace.port}")
+        info("Warning: do not use this in production!")
+        httpd.serve_forever()
+
+
 def paignion_main_function():
     """Handle Paignion being called from the command line."""
     parser = argparse.ArgumentParser(description="A text adventure game engine")
@@ -138,6 +157,20 @@ def paignion_main_function():
     parser_build.set_defaults(func=paignion_build)
     parser_build.add_argument(
         "project_dir", help="The directory containing the project files"
+    )
+
+    parser_serve = subparsers.add_parser(
+        "serve", help="Serve the game (on localhost by default)"
+    )
+    parser_serve.set_defaults(func=paignion_serve)
+    parser_serve.add_argument(
+        "project_dir", help="The directory containing the project files"
+    )
+    parser_serve.add_argument(
+        "-a", "--address", help="The address to serve the game on", default="localhost"
+    )
+    parser_serve.add_argument(
+        "-p", "--port", help="The port to serve the game on", default=8000
     )
 
     args = parser.parse_args()
